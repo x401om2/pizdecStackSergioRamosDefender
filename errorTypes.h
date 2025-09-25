@@ -1,0 +1,16 @@
+#ifndef ERROR_TYPES_H_
+#define ERROR_TYPES_H_
+
+typedef enum
+{
+    ERROR_NO,
+    ERROR_POINTER_FUNCNAME,
+    ERROR_POINTER_FILENAME,
+    ERROR_POINTER_VARNAME,
+    ERROR_SIZE,
+    ERROR_CAPACITY,
+    ERROR_POINTER_DATA
+
+} errorType;
+
+#endif
