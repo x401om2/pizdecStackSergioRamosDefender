@@ -4,32 +4,29 @@
 #include <stdlib.h>
 #include "errorTypes.h"
 
+#define POISON 0x9EEBA1
+#define INCREASE_CAPACITY 2
 typedef int typeOfElement;       // если резко придется сменить тип и сделаем это в одно действие здесь
+
+// typedef long long ptichka_t;
 
 typedef struct
 {
-#ifdef _DEBUG                   //как компилить дебаговый режим
-    const char* fileName;
-    const char* funcName;
-    int line;
-    const char* varName;
-#endif
+
+    typeOfElement* data;
     size_t capacity;
     size_t size;
-    typeOfElement *data;
 
 } myStack_t;
 
-int stackCtor(myStack_t* stk, size_t startingCapacity);
-int stackDetor(myStack_t* stk);
+errorType stackCtor(myStack_t* stk, size_t startingCapacity);
+errorType stackDetor(myStack_t* stk);
 
 errorType stackPush(myStack_t* stk, typeOfElement value);      // errorType
 errorType stackPop(myStack_t* stk, typeOfElement* value);
 
-//stack Verification , errorParse
-
-void stackDump(myStack_t* stk, errorType err, const char* msg);
-
-void printStack(myStack_t* stk);
+errorType stackDump(myStack_t* stk, errorType err, const char* msg);
+errorType stackVerificator(myStack_t* stk);
+errorType reallocStack(myStack_t* stk);
 
 #endif

@@ -1,37 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "stack.h"
+#include "testingStack.h"
 
-#define INIT(name) myStack_t name = {__FILE__, __func__, __LINE__, #name, NULL, 0, 0}
+// poison - отдельное значение конкретное число(в 16 ричном представлении буквы) и в POP тоже остается poison +
+
+// в push - сразу проверка и реаллоцирование памяти если size == capacity +
+
+//TODO файлик cpp со своими классными функциями полезными чтобы реюзить
 
 int main() {
-#ifdef _DEBUG
-    INIT(stk1);
-#else
-    myStack_t stk1 = {};
-#endif
-    typeOfElement x = 0;        // Объявлена переменная x
+
+    myStack_t stack = {};
+    typeOfElement value = 0;
     errorType result = ERROR_NO;
 
-    stackCtor(&stk1 , 5);
-    printf("%p, %lu, %lu\n", stk1.data, stk1.size, stk1.capacity);
+    allTestsForBitches();
 
-
-    stackPush(&stk1, 10);
-    stackPush(&stk1, 20);
-    stackPush(&stk1, 30);
-
-    stackDump(&stk1, ERROR_NO, "stack after creation");
-
-    result = stackPop(&stk1, &x);
-
-    if (result == ERROR_NO) {
-        printf("popped value: %d\n", x);
-    }
-
-    printStack(&stk1);
-
-    stackDetor(&stk1);
+    simpleTestForFullAndEmptyStack();
 
     return 0;
 }
