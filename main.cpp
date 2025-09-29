@@ -11,7 +11,7 @@
 
 int main() {
 
-    myStack_t stack = {};
+    myStack_t stack = {0};
     typeOfElement value = 0;
     errorType result = ERROR_NO;
 

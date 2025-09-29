@@ -4,19 +4,21 @@
 #include <stdlib.h>
 #include "errorTypes.h"
 
-#define POISON 0x9EEBA1
+#define POISON 0xEBA1
 #define INCREASE_CAPACITY 2
-typedef int typeOfElement;       // если резко придется сменить тип и сделаем это в одно действие здесь
+#define PETUSHOK 0xEBA1DEDA
 
-// typedef long long ptichka_t;
+typedef int typeOfElement;       // если резко придется сменить тип и сделаем это в одно действие здесь
 
 typedef struct
 {
+    unsigned firstPETUSHOK;
 
     typeOfElement* data;
     size_t capacity;
     size_t size;
 
+    unsigned secondPETUSHOK;
 } myStack_t;
 
 errorType stackCtor(myStack_t* stk, size_t startingCapacity);

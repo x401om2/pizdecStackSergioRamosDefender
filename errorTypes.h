@@ -15,7 +15,8 @@ typedef enum
     STACK_NO_MEMORY = 5,
     BAD_REALLOCATION = 6,
 
-    SIZE_BIGGER_THAN_CAPACITY = 10
+    SIZE_BIGGER_THAN_CAPACITY = 10,
+    PETUSHOK_V_BEDE = 11
 } errorType;
 
 #endif

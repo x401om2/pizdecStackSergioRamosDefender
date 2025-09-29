@@ -7,6 +7,11 @@ void testForFullStack(myStack_t* stack);
 void testForEmptyStack(myStack_t* stack);
 
 void allTestsForBitches();
+
+void testOfPetusharsMaboys();
+void testSizeBiggerThanCapacity();
+void testForEmptyStack();
+
 void simpleTestForFullAndEmptyStack();
 
 void funcSwitchErrors(errorType err);

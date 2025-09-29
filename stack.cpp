@@ -6,27 +6,28 @@
 #include "stack.h"
 #include "testingStack.h"
 
-#define STACK_CHECK_AND_RETURN(stk) \
+#define STACK_CHECK_AND_RETURN(stk, msg) \
     do { \
         errorType resultOfCheck = stackVerificator(stk); \
         if (resultOfCheck != ERROR_NO) { \
+            stackDump(stk, resultOfCheck, msg); \
             return resultOfCheck; \
         } \
     } while(0)
 
-
 // задефайнить проверку стека ВЕЗДЕ и внести проверку s > c добавить просто реаллокацию +
-//TODO ассерты закинуть
+// TODO ассерты закинуть
 
 errorType stackPush(myStack_t* stk, typeOfElement value)
 {
-    STACK_CHECK_AND_RETURN(stk);
+    STACK_CHECK_AND_RETURN(stk, "стек сломан до добавления\n");
 
     if (stk -> size == stk -> capacity)
     {
         errorType resultOfRealloc = reallocStack(stk);
         if (resultOfRealloc != ERROR_NO)
         {
+            stackDump(stk, resultOfRealloc, "реалокация отсосала не вышло не фартануло\n");
             return resultOfRealloc;
         }
     }
@@ -34,12 +35,14 @@ errorType stackPush(myStack_t* stk, typeOfElement value)
     stk -> data[stk -> size] = value;
     (stk -> size)++;
 
+    STACK_CHECK_AND_RETURN(stk, "стек сломан после добавления\n");
+
     return ERROR_NO;
 }
 
 errorType stackPop(myStack_t* stk, typeOfElement* value)
 {
-    STACK_CHECK_AND_RETURN(stk);
+    STACK_CHECK_AND_RETURN(stk, "стек сломан до добавления\n");
 
     if (stk -> size == 0)
     {
@@ -50,10 +53,12 @@ errorType stackPop(myStack_t* stk, typeOfElement* value)
     *value = stk -> data[stk -> size];
     stk -> data[stk -> size] = POISON;
 
+    STACK_CHECK_AND_RETURN(stk, "стек сломан после добавления\n");
+
     return ERROR_NO;
 }
 
-//TODO канарейка вначале и в конце
+// канарейка вначале и в конце + вроде трахнул
 errorType stackCtor(myStack_t* stk, size_t startingCapacity)
 {
     if (stk == NULL)
@@ -61,6 +66,9 @@ errorType stackCtor(myStack_t* stk, size_t startingCapacity)
 
     if (startingCapacity <= 0)
         return BAD_CAPACITY;
+
+    stk -> firstPETUSHOK = PETUSHOK;
+    stk -> secondPETUSHOK = PETUSHOK;
 
     stk -> data = (typeOfElement*) calloc(startingCapacity, sizeof(typeOfElement));
 
@@ -104,6 +112,15 @@ errorType stackDump(myStack_t* stk, errorType err, const char* msg) // трет�
         printf("\n--------------------------------THE END DUMPY BITCHES--------------------------------\n");
         return NULL_POINTER_STACK;
     }
+
+    printf("\nPETUH PERED DVER'U: %X (ожидаемо: %X)\n", stk -> firstPETUSHOK, PETUSHOK);
+
+    printf("\nPETUH ZA DVER'U: %X (ожидаемо: %X)\n\n", stk -> secondPETUSHOK, PETUSHOK);
+
+    if (stk -> firstPETUSHOK != PETUSHOK || stk -> secondPETUSHOK != PETUSHOK) {
+        printf("\n=====PETUSHOK V BEDE=====\n\n");
+    }
+
     size_t stackSize =  stk -> size;
     size_t stackCapacity = stk -> capacity;
 
@@ -113,9 +130,9 @@ errorType stackDump(myStack_t* stk, errorType err, const char* msg) // трет�
     printf("capacity: %lu\n", stk -> capacity);
     printf("data pointer: %p\n", stk -> data);
 
-    stackVerificator(stk);
+    errorType result = stackVerificator(stk);
 
-    if(stk -> data != NULL && stk -> capacity > 0 && stk -> size >= 0)
+    if(result == ERROR_NO)          //  stk -> data != NULL && stk -> capacity > 0 &&
     {
         printf("Data contents:\n");
         for(size_t i = 0; i < stk -> capacity; i++)
@@ -127,6 +144,8 @@ errorType stackDump(myStack_t* stk, errorType err, const char* msg) // трет�
                 printf("  [%lu] = %X (POISON)\n", i, stk -> data[i]);
             }
         }
+    }else {
+        return result;
     }
     printf("\n--------------------------------THE END DUMPY BITCHES--------------------------------\n");
     return ERROR_NO;
@@ -153,6 +172,10 @@ errorType stackVerificator(myStack_t* stk)
     if (stk -> size > stk -> capacity)
     {
         return SIZE_BIGGER_THAN_CAPACITY;
+    }
+    if (stk -> firstPETUSHOK != PETUSHOK || stk -> secondPETUSHOK != PETUSHOK)
+    {
+        return PETUSHOK_V_BEDE;
     }
     return ERROR_NO;
 }

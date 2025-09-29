@@ -71,6 +71,10 @@ void funcSwitchErrors(errorType err) // for add cases if we need it
             printf("Stack status: size greater than capacity - incorrect\n");
             break;
 
+        case PETUSHOK_V_BEDE:
+            printf("Stack status: petuh damaged - memory corruption\n");
+            break;
+
         default:
             printf("статус стека: неизвестная ошибка\n");
             break;
@@ -87,17 +91,30 @@ void allTestsForBitches()
 
     printf("\n|==================TEST OF ZERO CAPACITY==================|\n");
     errorType firstBlood = stackCtor(&stk, testCapacityZero);
-    stackDump(&stk, firstBlood, "FIRST BROO");
+    stackDump(&stk, firstBlood, "BAD_CAPACITY TEST");
 
     printf("\n|==================TEST OF NULL POINTER STACK==================|\n");
     errorType secondBlood = stackCtor(testStackOne, 0);
-    stackDump(testStackOne, secondBlood, "SECOND BROO");
+    stackDump(testStackOne, secondBlood, "NULL_POINTER_STACK TEST");
 
     printf("\n|==================TEST OF NULL DATA POINTER==================|\n");
     errorType thirdBlood = stackCtor(&stk, testCapacity);
     stk.data = NULL;
     errorType dataError = stackVerificator(&stk);
-    stackDump(&stk, dataError, "THIRD BROO");
+    stackDump(&stk, dataError, "NULL DATA POINTER");
+
+    // printf("\n|==================TEST OF BAD SIZE==================|\n");
+    // myStack_t stk4 = {};
+    // stk4.size = -1;
+    // errorType sizeError = stackVerificator(&stk4);
+    // stackDump(&stk4, sizeError, "BAD_SIZE TEST");
+
+    testSizeBiggerThanCapacity();
+
+    testOfPetusharsMaboys();
+
+    testForEmptyStack();
+
 
 }
 
@@ -120,4 +137,43 @@ void simpleTestForFullAndEmptyStack()
     stackDump(&stack, ERROR_NO, "END OF TESTS");
 
     stackDetor(&stack);
+}
+
+void testOfPetusharsMaboys()
+{
+    printf("\n|==================TEST OF PETUSHOK PROBLEMS==================|\n");
+    myStack_t stk6 = {};
+    stackCtor(&stk6, 5);
+    stk6.firstPETUSHOK = 0xDEAD;  // разьебали петуха первого
+    errorType petushokError = stackVerificator(&stk6);
+    stackDump(&stk6, petushokError, "PETUSHOK_V_BEDE TEST (ПЕРВЫЙ ГОЛУБОК)");
+
+    // второй бебур
+    myStack_t stk7 = {};
+    stackCtor(&stk7, 5);
+    stk7.secondPETUSHOK = 0xBEEF;  // разьебали второго петуха
+    errorType petushokError2 = stackVerificator(&stk7);
+    stackDump(&stk7, petushokError2, "PETUSHOK_V_BEDE TEST (ВТОРОЙ ГОЛУБОК)");
+    stackDetor(&stk7);
+}
+
+void testSizeBiggerThanCapacity()
+{
+    printf("\n|==================TEST OF SIZE BIGGER THAN CAPACITY==================|\n");
+    myStack_t stk5 = {};
+    stackCtor(&stk5, 3);
+    stk5.size = 10;
+    errorType sizeBiggerCapacityError = stackVerificator(&stk5);
+    stackDump(&stk5, sizeBiggerCapacityError, "SIZE BIGGER THAN CAPACITY");
+}
+
+void testForEmptyStack()
+{
+    myStack_t stk8 = {};
+    stackCtor(&stk8, 5);
+    typeOfElement value = 0;
+
+    errorType popErrorOfEmptyOpp = stackPop(&stk8, &value);
+    stackDump(&stk8, popErrorOfEmptyOpp, "EMPTY_STACK TEST - не можем попкить отсюда нихуя");
+    stackDetor(&stk8);
 }
