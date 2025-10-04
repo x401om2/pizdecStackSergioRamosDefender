@@ -17,6 +17,7 @@ typedef enum
 
     SIZE_BIGGER_THAN_CAPACITY = 10,
     PETUSHOK_V_BEDE = 11
+
 } errorType;
 
 #endif

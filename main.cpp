@@ -2,22 +2,24 @@
 #include <stdlib.h>
 #include "stack.h"
 #include "testingStack.h"
+#include "calculator.h"
+#include "calculatorOperations.h"
 
-// poison - отдельное значение конкретное число(в 16 ричном представлении буквы) и в POP тоже остается poison +
+//TODO poison - отдельное значение конкретное число(в 16 ричном представлении буквы) и в POP тоже остается poison +
 
-// в push - сразу проверка и реаллоцирование памяти если size == capacity +
+//TODO в push - сразу проверка и реаллоцирование памяти если size == capacity +
 
 //TODO файлик cpp со своими классными функциями полезными чтобы реюзить
 
 int main() {
+    myStack_t calcStack;
 
-    myStack_t stack = {0};
-    typeOfElement value = 0;
-    errorType result = ERROR_NO;
+    errorType resultOfCtor = stackCtor(&calcStack, 10);
 
-    allTestsForBitches();
+    // allTestsForBitches();
+    // simpleTestForFullAndEmptyStack();
 
-    simpleTestForFullAndEmptyStack();
-
+    translator();
+    calculateFromFile("processor.bin", &calcStack);
     return 0;
 }
