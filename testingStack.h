@@ -14,6 +14,4 @@ void testForEmptyStack();
 
 void simpleTestForFullAndEmptyStack();
 
-void funcSwitchErrors(errorType err);
-
 #endif

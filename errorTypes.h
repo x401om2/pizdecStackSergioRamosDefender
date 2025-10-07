@@ -20,4 +20,6 @@ typedef enum
 
 } errorType;
 
+void funcSwitchErrors(errorType err);
+
 #endif

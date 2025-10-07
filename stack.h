@@ -6,7 +6,7 @@
 
 #define POISON 0xEBA1
 #define INCREASE_CAPACITY 2
-#define PETUSHOK 0xEBA1DEDA
+#define PETUSHOK 0xDED
 
 typedef int typeOfElement;       // если резко придется сменить тип и сделаем это в одно действие здесь
 
