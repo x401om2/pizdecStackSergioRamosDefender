@@ -6,6 +6,7 @@
 #include "stack.h"
 #include "testingStack.h"
 
+
 #define STACK_CHECK_AND_RETURN(stk, msg) \
     do { \
         errorType resultOfCheck = stackVerificator(stk); \
@@ -15,12 +16,14 @@
         } \
     } while(0)
 
-// задефайнить проверку стека ВЕЗДЕ и внести проверку s > c добавить просто реаллокацию +
+// TODO задефайнить проверку стека ВЕЗДЕ и внести проверку s > c добавить просто реаллокацию +
 // TODO ассерты закинуть
 
 errorType stackPush(myStack_t* stk, typeOfElement value)
 {
     STACK_CHECK_AND_RETURN(stk, "стек сломан до добавления\n");
+
+    assert(stk != NULL); // на всякий случай воткнул
 
     if (stk -> size == stk -> capacity)
     {
@@ -42,6 +45,8 @@ errorType stackPush(myStack_t* stk, typeOfElement value)
 
 errorType stackPop(myStack_t* stk, typeOfElement* value)
 {
+    assert(value != NULL);
+
     STACK_CHECK_AND_RETURN(stk, "стек сломан до добавления\n");
 
     if (stk -> size == 0)
@@ -58,9 +63,13 @@ errorType stackPop(myStack_t* stk, typeOfElement* value)
     return ERROR_NO;
 }
 
-// канарейка вначале и в конце + вроде трахнул
+// TODO канарейка вначале и в конце + вроде БЫЫ
+
 errorType stackCtor(myStack_t* stk, size_t startingCapacity)
 {
+    // assert(stk != NULL);
+    // assert(startingCapacity > 0); - скипнет программу
+
     if (stk == NULL)
         return NULL_POINTER_STACK;
 
@@ -71,6 +80,8 @@ errorType stackCtor(myStack_t* stk, size_t startingCapacity)
     stk -> secondPETUSHOK = PETUSHOK;
 
     stk -> data = (typeOfElement*) calloc(startingCapacity, sizeof(typeOfElement));
+
+    // assert(stk->data != NULL); - прогу скипнет
 
     if (stk -> data == NULL)
         return NULL_DATA_POINTER;
@@ -102,6 +113,8 @@ errorType stackDetor(myStack_t* stk)
 
 errorType stackDump(myStack_t* stk, errorType err, const char* msg) // третий параметр - выводящийся текст ошибки и проверки
 {
+    assert(msg != NULL);
+
     printf("\n--------------------------------THE NEW DUMPY BITCHES--------------------------------\n");
     printf("\nMessage: %s\n", msg);
     printf("Error code: %d\n", err);
@@ -120,9 +133,6 @@ errorType stackDump(myStack_t* stk, errorType err, const char* msg) // трет�
     if (stk -> firstPETUSHOK != PETUSHOK || stk -> secondPETUSHOK != PETUSHOK) {
         printf("\n=====PETUSHOK V BEDE=====\n\n");
     }
-
-    size_t stackSize =  stk -> size;
-    size_t stackCapacity = stk -> capacity;
 
     funcSwitchErrors(err); // print stack status
 

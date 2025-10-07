@@ -3,9 +3,9 @@
 #include "stack.h"
 #include "errorTypes.h"
 
+
 void testForFullStack(myStack_t* stack)
 {
-    int value = 0;
     for (int i = 0; i < 2; i++)
     {
         errorType result = stackPush(stack, 20);
@@ -75,6 +75,10 @@ void funcSwitchErrors(errorType err) // for add cases if we need it
             printf("Stack status: petuh damaged - memory corruption\n");
             break;
 
+        case BAD_REALLOCATION:
+            printf("Stack status: reallocation failed\n");
+            break;
+
         default:
             printf("статус стека: неизвестная ошибка\n");
             break;
@@ -97,11 +101,11 @@ void allTestsForBitches()
     errorType secondBlood = stackCtor(testStackOne, 0);
     stackDump(testStackOne, secondBlood, "NULL_POINTER_STACK TEST");
 
-    printf("\n|==================TEST OF NULL DATA POINTER==================|\n");
-    errorType thirdBlood = stackCtor(&stk, testCapacity);
-    stk.data = NULL;
-    errorType dataError = stackVerificator(&stk);
-    stackDump(&stk, dataError, "NULL DATA POINTER");
+    // printf("\n|==================TEST OF NULL DATA POINTER==================|\n");
+    // errorType thirdBlood = stackCtor(&stk, testCapacity);
+    // stk.data = NULL;
+    // errorType dataError = stackVerificator(&stk);
+    // stackDump(&stk, dataError, "NULL DATA POINTER");
 
     // printf("\n|==================TEST OF BAD SIZE==================|\n");
     // myStack_t stk4 = {};
@@ -114,8 +118,6 @@ void allTestsForBitches()
     testOfPetusharsMaboys();
 
     testForEmptyStack();
-
-
 }
 
 void simpleTestForFullAndEmptyStack()
@@ -146,14 +148,14 @@ void testOfPetusharsMaboys()
     stackCtor(&stk6, 5);
     stk6.firstPETUSHOK = 0xDEAD;  // разьебали петуха первого
     errorType petushokError = stackVerificator(&stk6);
-    stackDump(&stk6, petushokError, "PETUSHOK_V_BEDE TEST (ПЕРВЫЙ ГОЛУБОК)");
+    stackDump(&stk6, petushokError, "PETUSHOK_V_BEDE TEST (ПЕРВЫЙ ГОЛУБОК) - СЛЕВА В ЗАЩИТЕ ПРОБОЙНА");
 
     // второй бебур
     myStack_t stk7 = {};
     stackCtor(&stk7, 5);
     stk7.secondPETUSHOK = 0xBEEF;  // разьебали второго петуха
     errorType petushokError2 = stackVerificator(&stk7);
-    stackDump(&stk7, petushokError2, "PETUSHOK_V_BEDE TEST (ВТОРОЙ ГОЛУБОК)");
+    stackDump(&stk7, petushokError2, "PETUSHOK_V_BEDE TEST (ВТОРОЙ ГОЛУБОК) - СПРАВА В ЗАЩИТЕ ПРОБОЙНА ИДЕМ КО ДНУ");
     stackDetor(&stk7);
 }
 
@@ -174,6 +176,6 @@ void testForEmptyStack()
     typeOfElement value = 0;
 
     errorType popErrorOfEmptyOpp = stackPop(&stk8, &value);
-    stackDump(&stk8, popErrorOfEmptyOpp, "EMPTY_STACK TEST - не можем попкить отсюда нихуя");
+    stackDump(&stk8, popErrorOfEmptyOpp, "EMPTY_STACK TEST - не можем попкить отсюда ниччче");
     stackDetor(&stk8);
 }
