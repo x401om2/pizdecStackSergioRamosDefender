@@ -1,6 +1,9 @@
-push 1
-push -5
-push 6
-discriminant
-sqrt
+in
+popr RAX
+push 20
+popr RBX
+pushr RAX
+pushr RBX
+add
 out
+hlt
